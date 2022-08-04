@@ -39,7 +39,7 @@ function App() {
             </ul>
 
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home isLoggedIn={true} />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/categories" element={<Categories />}></Route>
                 <Route
