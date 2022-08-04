@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import About from "./components/About";
 import Categories from "./components/Categories";
@@ -17,9 +17,16 @@ function Login() {
 }
 
 function App() {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        document.title = `You clicked ${count} times`;
+    });
+
     return (
         <div className="App">
             <h1>Welcome to React Router!</h1>
+            <button onClick={() => setCount(count + 1)}>Click Me!</button>
             <ul>
                 <li>
                     <Link to="/">Home</Link>
