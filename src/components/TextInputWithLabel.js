@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import TextInput from "./TextInput";
 
-export default function TextInputWithLabel({
+function TextInputWithLabel({
     label,
     name,
     value,
@@ -23,3 +23,4 @@ export default function TextInputWithLabel({
         </Form.Group>
     );
 }
+export default TextInputWithLabel;

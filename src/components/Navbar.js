@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import NavLink from "./Navlink";
 
-export default function SNavbar() {
+function SNavbar() {
     const navigate = useNavigate();
     return (
         <Navbar bg="dark" variant="dark">
@@ -29,3 +29,5 @@ export default function SNavbar() {
         </Navbar>
     );
 }
+
+export default SNavbar;

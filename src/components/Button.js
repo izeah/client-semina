@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-export default function SButton({
+function SButton({
     children,
     action,
     variant,
@@ -21,3 +21,5 @@ export default function SButton({
         </Button>
     );
 }
+
+export default SButton;
