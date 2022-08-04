@@ -3,6 +3,7 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import About from "./components/About";
 import Categories from "./components/Categories";
 import CategoriesDetail from "./components/CategoriesDetail";
+import Form from "./components/Form";
 import Home from "./components/Home";
 
 function Login() {
@@ -32,6 +33,9 @@ function App() {
                 <li>
                     <Link to="/login">Login</Link>
                 </li>
+                <li>
+                    <Link to="/form">Form</Link>
+                </li>
             </ul>
 
             <Routes>
@@ -43,6 +47,9 @@ function App() {
                     element={<CategoriesDetail />}></Route>
                 <Route path="/login" element={<Login />}>
                     Login
+                </Route>
+                <Route path="/form" element={<Form />}>
+                    Form
                 </Route>
             </Routes>
         </div>
