@@ -1,5 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import CategoriesPage from "./pages/categories";
+import CategoriesCreate from "./pages/categories/create";
+import CategoriesEdit from "./pages/categories/edit";
+import DashboardPage from "./pages/dashboard";
+import SigninPage from "./pages/signin";
 
 function App() {
     return (
