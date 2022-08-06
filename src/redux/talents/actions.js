@@ -45,7 +45,6 @@ export const fetchTalents = () => {
 
             let res = await debouncedFetchTalents("/cms/talents", params);
 
-            console.log(res.data.data);
             res.data.data.forEach((res) => {
                 res.avatar = res.image.name;
             });

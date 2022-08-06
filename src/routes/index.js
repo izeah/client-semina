@@ -27,9 +27,9 @@ function AppRoutes() {
                         <GuardRoute />
                     </>
                 }>
-                <Route path="dashboard/*" element={<HomeRoute />} />
-                <Route path="categories/*" element={<CategoriesRoute />} />
-                <Route path="talents/*" element={<TalentsRoute />} />
+                <Route path="/dashboard/*" element={<HomeRoute />} />
+                <Route path="/categories/*" element={<CategoriesRoute />} />
+                <Route path="/talents/*" element={<TalentsRoute />} />
                 <Route
                     path=""
                     element={<Navigate to="/dashboard" replace={true} />}

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import SBreadCrumb from "../../components/Breadcrumb";
 import SButton from "../../components/Button";
 import SearchInput from "../../components/SearchInput";
 import Table from "../../components/TableWithAction";
+import { accessTalents } from "../../const/access";
 import { setNotif } from "../../redux/notif/actions";
 import { fetchTalents, setKeyword } from "../../redux/talents/actions";
 import { deleteData } from "../../utils/fetch";
@@ -18,6 +19,29 @@ function TalentsPage() {
 
     const notif = useSelector((state) => state.notif);
     const talents = useSelector((state) => state.talents);
+
+    const [access, setAccess] = useState({
+        tambah: false,
+        hapus: false,
+        edit: false,
+    });
+
+    const checkAccess = () => {
+        let { role } = localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth"))
+            : {};
+        const access = { tambah: false, hapus: false, edit: false };
+        Object.keys(accessTalents).forEach(function (key) {
+            if (accessTalents[key].indexOf(role) >= 0) {
+                access[key] = true;
+            }
+        });
+        setAccess(access);
+    };
+
+    useEffect(() => {
+        checkAccess();
+    }, []);
 
     useEffect(() => {
         dispatch(fetchTalents());
@@ -53,7 +77,13 @@ function TalentsPage() {
     return (
         <Container className="mt-3">
             <SBreadCrumb textSecond={"Talents"} text />
-            <SButton action={() => navigate("/talents/create")}>Tambah</SButton>
+            {access.tambah && (
+                <div className="mb-3">
+                    <SButton action={() => navigate("/talents/create")}>
+                        Tambah
+                    </SButton>
+                </div>
+            )}
             <SearchInput
                 name="keyword"
                 query={talents.keyword}
@@ -67,8 +97,8 @@ function TalentsPage() {
                 thead={["Nama", "Role", "Avatar", "Aksi"]}
                 data={talents.data}
                 tbody={["name", "role", "avatar"]}
-                editUrl={`/talents`}
-                deleteAction={(id) => handleDelete(id)}
+                editUrl={access.tambah ? `/talents` : null}
+                deleteAction={access.hapus ? (id) => handleDelete(id) : null}
                 withoutPagination
             />
         </Container>

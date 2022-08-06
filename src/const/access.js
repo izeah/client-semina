@@ -1,94 +1,40 @@
-export const categories = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
+export const accessCategories = {
+    lihat: ["ORGANIZER"],
+    tambah: ["ORGANIZER"],
+    edit: ["ORGANIZER"],
+    hapus: ["ORGANIZER"],
 };
 
-export const talents = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
+export const accessTalents = {
+    lihat: ["ORGANIZER"],
+    tambah: ["ORGANIZER"],
+    edit: ["ORGANIZER"],
+    hapus: ["ORGANIZER"],
 };
 
-export const events = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
+export const accessEvents = {
+    lihat: ["ORGANIZER"],
+    tambah: ["ORGANIZER"],
+    edit: ["ORGANIZER"],
+    hapus: ["ORGANIZER"],
 };
 
-export const participant = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
+export const accessParticipant = {
+    lihat: ["ORGANIZER"],
+    tambah: ["ORGANIZER"],
+    edit: ["ORGANIZER"],
+    hapus: ["ORGANIZER"],
 };
-export const payments = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
-};
-
-export const orders = {
-    lihat: ["organizer", "admin", "owner"],
-    tambah: ["organizer", "admin", "owner"],
-    edit: ["organizer", "admin", "owner"],
-    hapus: ["organizer", "admin", "owner"],
+export const accessPayments = {
+    lihat: ["ORGANIZER"],
+    tambah: ["ORGANIZER"],
+    edit: ["ORGANIZER"],
+    hapus: ["ORGANIZER"],
 };
 
-export const hubList = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
-};
-
-export const location = {
-    lihat: ["organizer"],
-    tambah: ["organizer"],
-    edit: ["organizer"],
-    hapus: ["organizer"],
-};
-
-export const classification = {
-    lihat: ["organizer", "NOTARIS"],
-    tambah: ["organizer", "NOTARIS"],
-    edit: ["organizer", "NOTARIS"],
-    hapus: ["organizer", "NOTARIS"],
-};
-export const kbli = {
-    lihat: ["organizer", "NOTARIS"],
-    tambah: ["organizer", "NOTARIS"],
-    edit: ["organizer", "NOTARIS"],
-    hapus: ["organizer", "NOTARIS"],
-};
-
-export const pkg = {
-    lihat: ["organizer", "NOTARIS"],
-    tambah: ["organizer", "NOTARIS"],
-    edit: ["organizer", "NOTARIS"],
-    hapus: ["organizer", "NOTARIS"],
-};
-export const addons = {
-    lihat: ["organizer", "NOTARIS"],
-    tambah: ["organizer", "NOTARIS"],
-    edit: ["organizer", "NOTARIS"],
-    hapus: ["organizer", "NOTARIS"],
-};
-
-export const include = {
-    lihat: ["organizer", "NOTARIS"],
-    tambah: ["organizer", "NOTARIS"],
-    edit: ["organizer", "NOTARIS"],
-    hapus: ["organizer", "NOTARIS"],
-};
-
-export const draft = {
-    lihat: ["organizer", "NOTARIS"],
-    tambah: ["organizer", "NOTARIS"],
-    edit: ["organizer", "NOTARIS"],
-    hapus: ["organizer", "NOTARIS"],
+export const accessOrders = {
+    lihat: ["ORGANIZER", "ADMIN", "OWNER"],
+    tambah: ["ORGANIZER", "ADMIN", "OWNER"],
+    edit: ["ORGANIZER", "ADMIN", "OWNER"],
+    hapus: ["ORGANIZER", "ADMIN", "OWNER"],
 };

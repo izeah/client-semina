@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { categories } from "../const/access";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+    accessCategories,
+    accessEvents,
+    accessOrders,
+    accessParticipant,
+    accessTalents,
+} from "../const/access";
+import { userLogout } from "../redux/auth/actions";
 import NavLink from "./Navlink";
 
 function SNavbar() {
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [role, setRole] = useState(null);
 
     useEffect(() => {
@@ -18,47 +26,54 @@ function SNavbar() {
         };
         fetchData();
     }, []);
+
+    const handleLogout = () => {
+        dispatch(userLogout());
+    };
+
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">Dashboard</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/dashboard">
+                    Dashboard
+                </Navbar.Brand>
                 <Nav className="me-auto">
-                    <NavLink
-                        action={() => navigate("/")}
-                        role={role}
-                        roles={categories.lihat}>
+                    <NavLink to="/" role={role} roles={accessCategories.lihat}>
                         Home
                     </NavLink>
                     <NavLink
-                        action={() => navigate("/categories")}
+                        to="/categories"
                         role={role}
-                        roles={categories.lihat}>
+                        roles={accessCategories.lihat}>
                         Categories
                     </NavLink>
                     <NavLink
-                        action={() => navigate("/talents")}
+                        to="/talents"
                         role={role}
-                        roles={categories.lihat}>
+                        roles={accessTalents.lihat}>
                         Talents
                     </NavLink>
                     <NavLink
-                        action={() => navigate("/events")}
+                        to="/events"
                         role={role}
-                        roles={categories.lihat}>
+                        roles={accessEvents.lihat}>
                         Events
                     </NavLink>
                     <NavLink
-                        action={() => navigate("/participant")}
+                        to="/participant"
                         role={role}
-                        roles={categories.lihat}>
+                        roles={accessParticipant.lihat}>
                         Participant
                     </NavLink>
                     <NavLink
-                        action={() => navigate("/transactions")}
+                        to="/transactions"
                         role={role}
-                        roles={categories.lihat}>
+                        roles={accessOrders.lihat}>
                         Transactions
                     </NavLink>
+                </Nav>
+                <Nav className="justify-content-end">
+                    <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
