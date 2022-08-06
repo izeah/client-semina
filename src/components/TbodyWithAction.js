@@ -67,7 +67,7 @@ function TbodyWithAction({
                                     )}
                                     {deleteAction && (
                                         <Button
-                                            className={"mx-2"}
+                                            className="mx-2"
                                             variant="danger"
                                             size={"sm"}
                                             action={() =>

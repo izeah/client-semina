@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,28 @@ function CategoriesPage() {
 
     const notif = useSelector((state) => state.notif);
     const categories = useSelector((state) => state.categories);
+    const [access, setAccess] = useState({
+        tambah: false,
+        edit: false,
+        hapus: false,
+    });
+
+    const checkAccess = () => {
+        let { role } = localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth"))
+            : {};
+        const access = { tambah: false, hapus: false, edit: false };
+        Object.keys(accessTalents).forEach(function (key) {
+            if (accessTalents[key].indexOf(role) >= 0) {
+                access[key] = true;
+            }
+        });
+        setAccess(access);
+    };
+
+    useEffect(() => {
+        checkAccess();
+    }, []);
 
     useEffect(() => {
         dispatch(fetchCategories());
@@ -53,11 +75,13 @@ function CategoriesPage() {
             <Container className="mt-3">
                 <SBreadCrumb textSecond="Categories" />
 
-                <SButton
-                    className={"mb-3"}
-                    action={() => navigate("/categories/create")}>
-                    Tambah
-                </SButton>
+                {access.tambah && (
+                    <SButton
+                        className="mb-3"
+                        action={() => navigate("/categories/create")}>
+                        Tambah
+                    </SButton>
+                )}
 
                 {notif.status && (
                     <SAlert type={notif.typeNotif} message={notif.message} />
@@ -68,8 +92,10 @@ function CategoriesPage() {
                     thead={["Nama", "Aksi"]}
                     data={categories.data}
                     tbody={["name"]}
-                    editUrl={`/categories`}
-                    deleteAction={(id) => handleDelete(id)}
+                    editUrl={access.edit ? `/categories` : null}
+                    deleteAction={
+                        access.hapus ? (id) => handleDelete(id) : null
+                    }
                     withoutPagination
                 />
             </Container>

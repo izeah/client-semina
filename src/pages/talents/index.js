@@ -78,11 +78,11 @@ function TalentsPage() {
         <Container className="mt-3">
             <SBreadCrumb textSecond={"Talents"} text />
             {access.tambah && (
-                <div className="mb-3">
-                    <SButton action={() => navigate("/talents/create")}>
-                        Tambah
-                    </SButton>
-                </div>
+                <SButton
+                    className="mb-3"
+                    action={() => navigate("/talents/create")}>
+                    Tambah
+                </SButton>
             )}
             <SearchInput
                 name="keyword"
