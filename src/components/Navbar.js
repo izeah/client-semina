@@ -7,6 +7,7 @@ import {
     accessEvents,
     accessOrders,
     accessParticipant,
+    accessPayments,
     accessTalents,
 } from "../const/access";
 import { userLogout } from "../redux/auth/actions";
@@ -52,6 +53,12 @@ function SNavbar() {
                         role={role}
                         roles={accessTalents.lihat}>
                         Talents
+                    </NavLink>
+                    <NavLink
+                        to="/payments"
+                        role={role}
+                        roles={accessPayments.lihat}>
+                        Payments
                     </NavLink>
                     <NavLink
                         to="/events"

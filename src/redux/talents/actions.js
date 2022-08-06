@@ -54,7 +54,8 @@ export const fetchTalents = () => {
                     talents: res.data.data,
                 })
             );
-        } catch (error) {
+        } catch (err) {
+            console.log(err);
             dispatch(errorFetchingTalents());
         }
     };

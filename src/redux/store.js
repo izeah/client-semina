@@ -9,6 +9,7 @@ import thunk from "redux-thunk";
 import authReducer from "./auth/reducer";
 import categoriesReducer from "./categories/reducer";
 import notifReducer from "./notif/reducer";
+import paymentsReducer from "./payments/reducer";
 import talentsReducer from "./talents/reducer";
 
 const composerEnhancer =
@@ -19,10 +20,7 @@ const rootReducers = combineReducers({
     categories: categoriesReducer,
     notif: notifReducer,
     talents: talentsReducer,
-    // speakers: speakersReducer,
-    // events: eventsReducer,
-    // lists: listsReducer,
-    // transactions: transactionsReducer,
+    payments: paymentsReducer,
 });
 
 const store = createStore(

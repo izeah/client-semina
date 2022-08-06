@@ -58,9 +58,11 @@ function CategoryCreate() {
                     urlSecond={"/categories"}
                     textThird={"Create"}
                 />
+
                 {alert.status && (
                     <SAlert type={alert.type} message={alert.message} />
                 )}
+
                 <Form
                     form={form}
                     isLoading={isLoading}

@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import SAlert from "../../components/Alert";
-import SBreadCrumb from "../../components/Breadcrumb";
-import SButton from "../../components/Button";
-import SearchInput from "../../components/SearchInput";
+import BreadCrumb from "../../components/Breadcrumb";
+import Button from "../../components/Button";
 import Table from "../../components/TableWithAction";
-import { accessTalents } from "../../const/access";
+import { accessPayments } from "../../const/access";
 import { setNotif } from "../../redux/notif/actions";
-import { fetchTalents, setKeyword } from "../../redux/talents/actions";
+import { fetchPayments } from "../../redux/payments/actions";
 import { deleteData } from "../../utils/fetch";
 
-function TalentsPage() {
+function PaymentsPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const notif = useSelector((state) => state.notif);
-    const talents = useSelector((state) => state.talents);
+    const payments = useSelector((state) => state.payments);
 
     const [access, setAccess] = useState({
         tambah: false,
@@ -31,8 +30,8 @@ function TalentsPage() {
             ? JSON.parse(localStorage.getItem("auth"))
             : {};
         const access = { tambah: false, hapus: false, edit: false };
-        Object.keys(accessTalents).forEach(function (key) {
-            if (accessTalents[key].indexOf(role) >= 0) {
+        Object.keys(accessPayments).forEach(function (key) {
+            if (accessPayments[key].indexOf(role) >= 0) {
                 access[key] = true;
             }
         });
@@ -44,8 +43,8 @@ function TalentsPage() {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchTalents());
-    }, [dispatch, talents.keyword]);
+        dispatch(fetchPayments());
+    }, [dispatch]);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -59,49 +58,43 @@ function TalentsPage() {
             cancelButtonText: "Batal",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const res = await deleteData(`/cms/talents/${id}`);
+                const res = await deleteData(`/cms/payments/${id}`);
 
                 dispatch(
                     setNotif(
                         true,
                         "success",
-                        `berhasil hapus talent ${res.data.data.name}`
+                        `berhasil hapus metode pembayaran ${res.data.data.type}`
                     )
                 );
 
-                dispatch(fetchTalents());
+                dispatch(fetchPayments());
             }
         });
     };
 
     return (
         <Container className="mt-3">
-            <SBreadCrumb textSecond="Talents" />
+            <BreadCrumb textSecond="Payments" />
 
             {access.tambah && (
-                <SButton
+                <Button
                     className="mb-3"
-                    action={() => navigate("/talents/create")}>
+                    action={() => navigate("/payments/create")}>
                     Tambah
-                </SButton>
+                </Button>
             )}
-
-            <SearchInput
-                name="keyword"
-                query={talents.keyword}
-                handleChange={(e) => dispatch(setKeyword(e.target.value))}
-            />
 
             {notif.status && (
                 <SAlert type={notif.typeNotif} message={notif.message} />
             )}
 
             <Table
-                status={talents.status}
-                thead={["Nama", "Role", "Avatar", "Aksi"]}
-                data={talents.data}
-                tbody={["name", "role", "avatar"]}
-                editUrl={access.tambah ? `/talents` : null}
+                status={payments.status}
+                thead={["Type", "Avatar", "Aksi"]}
+                data={payments.data}
+                tbody={["type", "avatar"]}
+                editUrl={access.edit ? `/payments` : null}
                 deleteAction={access.hapus ? (id) => handleDelete(id) : null}
                 withoutPagination
             />
@@ -109,4 +102,4 @@ function TalentsPage() {
     );
 }
 
-export default TalentsPage;
+export default PaymentsPage;

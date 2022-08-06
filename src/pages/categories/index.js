@@ -7,6 +7,7 @@ import SAlert from "../../components/Alert";
 import SBreadCrumb from "../../components/Breadcrumb";
 import SButton from "../../components/Button";
 import Table from "../../components/TableWithAction";
+import { accessCategories } from "../../const/access";
 import { fetchCategories } from "../../redux/categories/actions";
 import { setNotif } from "../../redux/notif/actions";
 import { deleteData } from "../../utils/fetch";
@@ -28,8 +29,8 @@ function CategoriesPage() {
             ? JSON.parse(localStorage.getItem("auth"))
             : {};
         const access = { tambah: false, hapus: false, edit: false };
-        Object.keys(accessTalents).forEach(function (key) {
-            if (accessTalents[key].indexOf(role) >= 0) {
+        Object.keys(accessCategories).forEach(function (key) {
+            if (accessCategories[key].indexOf(role) >= 0) {
                 access[key] = true;
             }
         });

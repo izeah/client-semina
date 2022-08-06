@@ -6,6 +6,7 @@ import SNavbar from "../components/Navbar";
 import LoginPage from "../pages/signin";
 import CategoriesRoute from "./CategoriesRoute";
 import HomeRoute from "./HomeRoute";
+import PaymentsRoute from "./PaymentsRoute";
 import TalentsRoute from "./TalentsRoute";
 
 function AppRoutes() {
@@ -30,6 +31,7 @@ function AppRoutes() {
                 <Route path="/dashboard/*" element={<HomeRoute />} />
                 <Route path="/categories/*" element={<CategoriesRoute />} />
                 <Route path="/talents/*" element={<TalentsRoute />} />
+                <Route path="/payments/*" element={<PaymentsRoute />} />
                 <Route
                     path=""
                     element={<Navigate to="/dashboard" replace={true} />}

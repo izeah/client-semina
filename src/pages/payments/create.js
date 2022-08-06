@@ -8,11 +8,11 @@ import { setNotif } from "../../redux/notif/actions";
 import { postData } from "../../utils/fetch";
 import SForm from "./form";
 
-function TalentsCreate() {
+function PaymentsCreate() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [form, setForm] = useState({
-        name: "",
+        type: "",
         role: "",
         file: "",
         avatar: "",
@@ -29,7 +29,7 @@ function TalentsCreate() {
     const uploadImage = async (file) => {
         let formData = new FormData();
         formData.append("avatar", file);
-        const res = await postData(`/cms/images`, formData, true);
+        const res = await postData("/cms/images", formData, true);
         return res;
     };
 
@@ -37,10 +37,10 @@ function TalentsCreate() {
         if (e.target.name === "avatar") {
             if (
                 e?.target?.files[0]?.type === "image/jpg" ||
-                e?.target?.files[0]?.type === "image/jpeg" ||
-                e?.target?.files[0]?.type === "image/png"
+                e?.target?.files[0]?.type === "image/png" ||
+                e?.target?.files[0]?.type === "image/jpeg"
             ) {
-                let size = parseFloat(e.target.files[0].size / 3145728).toFixed(
+                var size = parseFloat(e.target.files[0].size / 3145728).toFixed(
                     2
                 );
 
@@ -81,10 +81,7 @@ function TalentsCreate() {
                 });
             }
         } else {
-            setForm({
-                ...form,
-                [e.target.name]: e.target.value,
-            });
+            setForm({ ...form, [e.target.name]: e.target.value });
         }
     };
 
@@ -93,20 +90,20 @@ function TalentsCreate() {
         try {
             const payload = {
                 image: form.file,
-                role: form.role,
-                name: form.name,
+                type: form.type,
             };
 
-            const res = await postData(`/cms/talents`, payload);
+            const res = await postData("/cms/payments", payload);
 
             dispatch(
                 setNotif(
                     true,
                     "success",
-                    `berhasil tambah talent ${res.data.data.name}`
+                    `berhasil tambah payments ${res.data.data.type}`
                 )
             );
-            navigate("/talents");
+
+            navigate("/payments");
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
@@ -122,9 +119,9 @@ function TalentsCreate() {
     return (
         <Container>
             <SBreadCrumb
-                textSecond={"Talents"}
-                urlSecond={"/talents"}
-                textThird={"Create"}
+                textSecond={"Payments"}
+                urlSecond={"/payments"}
+                textThird="Create"
             />
 
             {alert.status && (
@@ -141,4 +138,4 @@ function TalentsCreate() {
     );
 }
 
-export default TalentsCreate;
+export default PaymentsCreate;

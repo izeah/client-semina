@@ -44,7 +44,8 @@ export const fetchCategories = () => {
                     categories: res.data.data,
                 })
             );
-        } catch (error) {
+        } catch (err) {
+            console.log(err);
             dispatch(errorFetchingCategories());
         }
     };
