@@ -11,7 +11,7 @@ import { fetchCategories } from "../../redux/categories/actions";
 import { setNotif } from "../../redux/notif/actions";
 import { deleteData } from "../../utils/fetch";
 
-function Categories() {
+function CategoriesPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ function Categories() {
 
     useEffect(() => {
         dispatch(fetchCategories());
-    }, []);
+    }, [dispatch]);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -77,4 +77,4 @@ function Categories() {
     );
 }
 
-export default Categories;
+export default CategoriesPage;

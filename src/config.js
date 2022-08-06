@@ -1,2 +1,3 @@
 const seminaApiUrl = process.env.REACT_APP_SEMINA_API_URL;
-export { seminaApiUrl };
+const seminaImageUrl = process.env.REACT_APP_SEMINA_IMAGE_URL;
+export { seminaApiUrl, seminaImageUrl };

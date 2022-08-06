@@ -3,9 +3,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import GuardRoute from "../components/GuardRoute";
 import GuestOnlyRoute from "../components/GuestOnlyRoute";
 import SNavbar from "../components/Navbar";
-import Login from "../pages/signin";
+import LoginPage from "../pages/signin";
 import CategoriesRoute from "./CategoriesRoute";
 import HomeRoute from "./HomeRoute";
+import TalentsRoute from "./TalentsRoute";
 
 function AppRoutes() {
     return (
@@ -14,7 +15,7 @@ function AppRoutes() {
                 path="/login"
                 element={
                     <GuestOnlyRoute>
-                        <Login />
+                        <LoginPage />
                     </GuestOnlyRoute>
                 }
             />
@@ -28,6 +29,7 @@ function AppRoutes() {
                 }>
                 <Route path="dashboard/*" element={<HomeRoute />} />
                 <Route path="categories/*" element={<CategoriesRoute />} />
+                <Route path="talents/*" element={<TalentsRoute />} />
                 <Route
                     path=""
                     element={<Navigate to="/dashboard" replace={true} />}

@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import { Image, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { seminaApiUrl } from "../config";
+import { seminaImageUrl } from "../config";
 import Button from "./Button";
 
 function TbodyWithAction({
@@ -39,7 +39,7 @@ function TbodyWithAction({
                                                     height={40}
                                                     width={40}
                                                     roundedCircle
-                                                    src={`${seminaApiUrl}/${data[key]}`}
+                                                    src={`${seminaImageUrl}/${data[key]}`}
                                                 />
                                             ) : key === "date" ? (
                                                 moment(data[key]).format(
