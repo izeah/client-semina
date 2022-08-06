@@ -1,13 +1,15 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Card, Container } from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SAlert from "../../components/Alert";
-import { seminaApiUrl } from "../../config";
+import { userLogin } from "../../redux/auth/actions";
+import { postData } from "../../utils/fetch";
 import SForm from "./form";
 
 function SigninPage() {
-    const token = localStorage.getItem("token");
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -30,13 +32,16 @@ function SigninPage() {
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            const res = await axios.post(
-                `${seminaApiUrl}/cms/auth/signin`,
-                form
+            const res = await postData("/cms/auth/signin", form);
+
+            dispatch(
+                userLogin(
+                    res.data.data.token,
+                    res.data.data.role,
+                    res.data.data.email
+                )
             );
 
-            localStorage.setItem("token", res.data.data.token);
-            localStorage.setItem("role", res.data.data.role);
             setIsLoading(false);
             navigate("/");
         } catch (err) {
@@ -48,8 +53,6 @@ function SigninPage() {
             });
         }
     };
-
-    if (token) return <Navigate to="/" replace={true} />;
 
     return (
         <Container fluid="md" className="my-5">

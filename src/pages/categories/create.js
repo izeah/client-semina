@@ -1,16 +1,16 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SAlert from "../../components/Alert";
 import SBreadCrumb from "../../components/Breadcrumb";
-import SNavbar from "../../components/Navbar";
-import { seminaApiUrl } from "../../config";
+import { setNotif } from "../../redux/notif/actions";
+import { postData } from "../../utils/fetch";
 import Form from "./form";
 
 function CategoryCreate() {
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [form, setForm] = useState({ name: "" });
 
@@ -29,11 +29,14 @@ function CategoryCreate() {
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            await axios.post(`${seminaApiUrl}/cms/categories`, form, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const res = await postData(`/cms/categories`, form);
+            dispatch(
+                setNotif(
+                    true,
+                    "success",
+                    `berhasil tambah kategori ${res.data.data.name}`
+                )
+            );
 
             navigate("/categories");
             setIsLoading(false);
@@ -49,8 +52,7 @@ function CategoryCreate() {
 
     return (
         <>
-            <SNavbar />
-            <Container>
+            <Container className="mt-3">
                 <SBreadCrumb
                     textSecond={"Categories"}
                     urlSecond={"/categories"}

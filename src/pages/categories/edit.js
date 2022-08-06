@@ -1,15 +1,17 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SAlert from "../../components/Alert";
 import SBreadCrumb from "../../components/Breadcrumb";
-import { seminaApiUrl } from "../../config";
+import { setNotif } from "../../redux/notif/actions";
+import { getData, putData } from "../../utils/fetch";
 import SForm from "./form";
 
 function CategoriesEdit() {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { id } = useParams();
 
     const [form, setForm] = useState({
@@ -27,19 +29,21 @@ function CategoriesEdit() {
     };
 
     const fetchOneCategory = async () => {
-        const res = await axios.get(`${seminaApiUrl}/cms/categories/${id}`);
+        const res = await getData(`/cms/categories/${id}`);
         setForm({ ...form, name: res.data.data.name });
     };
 
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            await axios.put(`${seminaApiUrl}/cms/categories/${id}`, form, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
+            const res = await putData(`/cms/categories/${id}`, form);
+            dispatch(
+                setNotif(
+                    true,
+                    "success",
+                    `berhasil ubah kategori ${res.data.data.name}`
+                )
+            );
             navigate("/categories");
             setIsLoading(false);
         } catch (err) {
@@ -54,10 +58,10 @@ function CategoriesEdit() {
 
     useEffect(() => {
         fetchOneCategory();
-    }, form);
+    }, []);
 
     return (
-        <Container>
+        <Container className="mt-3">
             <SBreadCrumb
                 textSecond="Categories"
                 urlSecond="/categories"
