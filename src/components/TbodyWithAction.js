@@ -10,7 +10,6 @@ function TbodyWithAction({
     display,
     editUrl,
     deleteAction,
-    customAction,
     actionNotDisplay,
     status,
 }) {
@@ -60,7 +59,7 @@ function TbodyWithAction({
                                             size={"sm"}
                                             action={() =>
                                                 navigate(
-                                                    `${editUrl}/${data._id}`
+                                                    `${editUrl}/${data._id}/edit`
                                                 )
                                             }>
                                             Edit

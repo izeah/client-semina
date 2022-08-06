@@ -9,7 +9,6 @@ import { getData, putData } from "../../utils/fetch";
 import SForm from "./form";
 
 function CategoriesEdit() {
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { seminaApiUrl } from "../config";
-import handleError from "./HandleError";
+import handleError from "./handleError";
 
 export async function getData(url, params) {
     try {

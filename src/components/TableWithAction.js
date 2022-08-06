@@ -14,7 +14,6 @@ function TableWithAction({
     editUrl,
     deleteAction,
     pages,
-    customAction,
     status,
 }) {
     return (
@@ -28,7 +27,6 @@ function TableWithAction({
                     editUrl={editUrl}
                     deleteAction={deleteAction}
                     actionNotDisplay={actionNotDisplay}
-                    customAction={customAction}
                 />
             </Table>
             {!withoutPagination && data.length ? (

@@ -27,13 +27,12 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 status: statusList.success,
-                data: action.data,
+                data: action.categories,
             };
         case ERROR_FETCHING_CATEGORIES:
             return {
                 ...state,
                 status: statusList.error,
-                message: action.message,
             };
         default:
             return state;

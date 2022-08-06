@@ -8,6 +8,7 @@ import SBreadCrumb from "../../components/Breadcrumb";
 import SButton from "../../components/Button";
 import Table from "../../components/TableWithAction";
 import { fetchCategories } from "../../redux/categories/actions";
+import { setNotif } from "../../redux/notif/actions";
 import { deleteData } from "../../utils/fetch";
 
 function Categories() {
@@ -46,6 +47,7 @@ function Categories() {
             }
         });
     };
+
     return (
         <>
             <Container className="mt-3">
@@ -66,7 +68,7 @@ function Categories() {
                     thead={["Nama", "Aksi"]}
                     data={categories.data}
                     tbody={["name"]}
-                    editUrl={`/categories/edit`}
+                    editUrl={`/categories`}
                     deleteAction={(id) => handleDelete(id)}
                     withoutPagination
                 />

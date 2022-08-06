@@ -13,7 +13,7 @@ function listener() {
 }
 
 function listen() {
-    store.subscribe(listen);
+    store.subscribe(listener);
 }
 
 export { listen };
