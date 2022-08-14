@@ -10,6 +10,7 @@ function TbodyWithAction({
     display,
     editUrl,
     deleteAction,
+    customAction,
     actionNotDisplay,
     status,
 }) {
@@ -53,6 +54,11 @@ function TbodyWithAction({
                             )}
                             {!actionNotDisplay && (
                                 <td>
+                                    {customAction &&
+                                        customAction(
+                                            data._id,
+                                            data.statusEvent
+                                        )}
                                     {editUrl && (
                                         <Button
                                             variant="success"

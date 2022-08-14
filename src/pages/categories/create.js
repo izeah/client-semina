@@ -8,7 +8,7 @@ import { setNotif } from "../../redux/notif/actions";
 import { postData } from "../../utils/fetch";
 import Form from "./form";
 
-function CategoryCreate() {
+function CategoriesCreate() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -74,4 +74,4 @@ function CategoryCreate() {
     );
 }
 
-export default CategoryCreate;
+export default CategoriesCreate;

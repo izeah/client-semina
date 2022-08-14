@@ -20,7 +20,7 @@ import {
     fetchListTalents,
 } from "../../redux/lists/actions";
 import { setNotif } from "../../redux/notif/actions";
-import { deleteData } from "../../utils/fetch";
+import { deleteData, putData } from "../../utils/fetch";
 
 function EventsPage() {
     const navigate = useNavigate();
@@ -57,7 +57,37 @@ function EventsPage() {
                     setNotif(
                         true,
                         "success",
-                        `berhasil hapus talent ${res.data.data.name}`
+                        `berhasil hapus event ${res.data.data.title}`
+                    )
+                );
+
+                dispatch(fetchEvents());
+            }
+        });
+    };
+
+    const handleChangeStatus = (id, status) => {
+        Swal.fire({
+            title: "Apa kamu yakin?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Iya, Ubah Status",
+            cancelButtonText: "Batal",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const payload = {
+                    statusEvent: status === "Published" ? "Draft" : "Published",
+                };
+                const res = await putData(`/cms/events/${id}/status`, payload);
+
+                dispatch(
+                    setNotif(
+                        true,
+                        "success",
+                        `berhasil ubah status event ${res.data.data.title}`
                     )
                 );
 
@@ -124,6 +154,17 @@ function EventsPage() {
                 ]}
                 editUrl={`/events`}
                 deleteAction={(id) => handleDelete(id)}
+                customAction={(id, status = "") => {
+                    return (
+                        <SButton
+                            className={"mx-2"}
+                            variant="primary"
+                            size={"sm"}
+                            action={() => handleChangeStatus(id, status)}>
+                            Change Status
+                        </SButton>
+                    );
+                }}
                 withoutPagination
             />
         </Container>

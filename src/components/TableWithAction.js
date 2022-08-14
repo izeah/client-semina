@@ -13,6 +13,7 @@ function TableWithAction({
     tbody,
     editUrl,
     deleteAction,
+    customAction,
     pages,
     status,
 }) {
@@ -27,6 +28,7 @@ function TableWithAction({
                     editUrl={editUrl}
                     deleteAction={deleteAction}
                     actionNotDisplay={actionNotDisplay}
+                    customAction={customAction}
                 />
             </Table>
             {!withoutPagination && data.length ? (
