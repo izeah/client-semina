@@ -12,8 +12,7 @@ import notifReducer from "./notif/reducer";
 import paymentsReducer from "./payments/reducer";
 import talentsReducer from "./talents/reducer";
 
-const composerEnhancer =
-    window.___REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composerEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducers = combineReducers({
     auth: authReducer,

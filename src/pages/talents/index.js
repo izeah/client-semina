@@ -87,7 +87,6 @@ function TalentsPage() {
             )}
 
             <SearchInput
-                name="keyword"
                 query={talents.keyword}
                 handleChange={(e) => dispatch(setKeyword(e.target.value))}
             />
