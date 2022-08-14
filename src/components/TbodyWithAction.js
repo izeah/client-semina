@@ -44,7 +44,18 @@ function TbodyWithAction({
                                                 />
                                             ) : key === "date" ? (
                                                 moment(data[key]).format(
-                                                    "DD-MM-YYYY, h:mm:ss a"
+                                                    "DD-MM-YYYY HH:MM:SS"
+                                                )
+                                            ) : key === "status" ? (
+                                                data[key] === "PAID" ||
+                                                data[key] === "PUBLISHED" ? (
+                                                    <span className="fw-bold text-success">
+                                                        {data[key]}
+                                                    </span>
+                                                ) : (
+                                                    <span className="fw-bold text-warning">
+                                                        {data[key]}
+                                                    </span>
                                                 )
                                             ) : (
                                                 data[key]

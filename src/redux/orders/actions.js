@@ -56,14 +56,18 @@ export const fetchOrders = () => {
             let res = await debouncedFetchOrders("/cms/orders", params);
 
             const temp = [];
+            moment.locale("id");
             res.data.data.order.forEach((res) => {
                 temp.push({
                     name: `${res.personalDetail.firstName} ${res.personalDetail.lastName}`,
                     email: res.personalDetail.email,
+                    date: res.date,
                     title: res.historyEvent.title,
-                    date: res.historyEvent.date,
-                    orderDate: moment(res.date).format("DD-MM-YYYY, h:mm:ss a"),
+                    eventDate: moment(res.historyEvent.date)
+                        .locale("id")
+                        .format("DD MMMM YYYY"),
                     venueName: res.historyEvent.venueName,
+                    status: res.status,
                 });
             });
 

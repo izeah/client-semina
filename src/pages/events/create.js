@@ -214,8 +214,8 @@ function EventsCreate() {
     return (
         <Container>
             <BreadCrumb
-                textSecound={"Events"}
-                urlSecound={"/events"}
+                textSecond={"Events"}
+                urlSecond={"/events"}
                 textThird="Create"
             />
             {alert.status && (

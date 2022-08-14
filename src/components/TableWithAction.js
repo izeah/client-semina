@@ -16,10 +16,11 @@ function TableWithAction({
     customAction,
     pages,
     status,
+    size,
 }) {
     return (
         <>
-            <Table striped bordered hover>
+            <Table size={size} striped bordered hover>
                 <Thead text={thead} />
                 <Tbody
                     status={status}

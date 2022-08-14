@@ -28,9 +28,9 @@ const handleError = (error) => {
                 desc: "Unauthorized",
             };
 
-            window.location.href = `${window.location.origin}/dashboard`;
-
             localStorage.clear();
+            window.location.href = `${window.location.origin}/login`;
+
             break;
         case 402:
             dataErr = {
@@ -74,6 +74,15 @@ const handleError = (error) => {
                 message: setMessage,
                 desc: "Internal Server Error",
             };
+
+            if (
+                message === "jwt expired" ||
+                response?.data?.msg === "jwt expired"
+            ) {
+                localStorage.clear();
+                window.location.href = `${window.location.origin}/login`;
+            }
+
             break;
         default:
             dataErr = {

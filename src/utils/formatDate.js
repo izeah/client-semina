@@ -1,11 +1,12 @@
 export function formatDate(date) {
     const d = new Date(date);
-    const dtf = new Intl.DateTimeFormat("en", {
+    const dtf = new Intl.DateTimeFormat("id", {
         year: "numeric",
-        month: "short",
+        month: "long",
         day: "2-digit",
     });
-    const [{ value: mo }, , { value: da }] = dtf.formatToParts(d);
 
-    return `${da} ${mo}`;
+    const [{ value: day }, , { value: month }] = dtf.formatToParts(d);
+
+    return `${day} ${month}`;
 }

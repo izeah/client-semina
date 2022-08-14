@@ -1,5 +1,6 @@
 import * as React from "react";
 import { DateRange } from "react-date-range";
+import * as locales from "react-date-range/dist/locale";
 
 function InputDate({ date, onChangeDate, setIsShowed }) {
     React.useEffect(() => {
@@ -26,6 +27,7 @@ function InputDate({ date, onChangeDate, setIsShowed }) {
             style={{ zIndex: "1" }}
             ref={refDate}>
             <DateRange
+                locale={locales["id"]}
                 editableDateInputs={true}
                 onChange={onChangeDate}
                 moveRangeOnFirstSelection={false}

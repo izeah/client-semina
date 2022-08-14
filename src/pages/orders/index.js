@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SAlert from "../../components/Alert";
 import SBreadCrumb from "../../components/Breadcrumb";
 import DateRange from "../../components/InputDate";
 import SearchInput from "../../components/SearchInput";
@@ -16,7 +15,6 @@ function OrdersPage() {
     const dispatch = useDispatch();
 
     const user = useSelector((state) => state.auth);
-    const notif = useSelector((state) => state.notif);
     const orders = useSelector((state) => state.orders);
 
     const [isShowed, setIsShowed] = useState(false);
@@ -37,16 +35,19 @@ function OrdersPage() {
 
     const displayDate = `${
         orders.date?.startDate ? formatDate(orders.date?.startDate) : ""
-    }${orders.date?.endDate ? formatDate(orders.date?.endDate) : ""}`;
+    } - ${orders.date?.endDate ? formatDate(orders.date?.endDate) : ""}`;
 
     return (
         <Container className="mt-3">
             <SBreadCrumb textSecond="Orders" />
             <Row>
-                <Col
-                    className="cursor-pointer position-relative"
-                    onClick={() => setIsShowed(true)}>
-                    <SearchInput disabled query={displayDate} />
+                <Col sm={4} md={4} lg={4}>
+                    <SearchInput
+                        query={displayDate}
+                        handleClick={() => setIsShowed(true)}
+                        className="cursor-pointer position-relative"
+                        readOnly
+                    />
                     {isShowed ? (
                         <DateRange
                             date={orders.date}
@@ -61,14 +62,28 @@ function OrdersPage() {
                 </Col>
             </Row>
 
-            {notif.status && (
-                <SAlert type={notif.typeNotif} message={notif.message} />
-            )}
             <Table
+                size="sm"
                 status={orders.status}
-                thead={["Nama", "Email", "Judul", "Tanggal", "Tempat"]}
+                thead={[
+                    "Nama",
+                    "Email",
+                    "Tanggal Order",
+                    "Judul Acara",
+                    "Tanggal Acara",
+                    "Tempat Acara",
+                    "Status",
+                ]}
                 data={orders.data}
-                tbody={["name", "email", "title", "date", "venueName"]}
+                tbody={[
+                    "name",
+                    "email",
+                    "date",
+                    "title",
+                    "eventDate",
+                    "venueName",
+                    "status",
+                ]}
                 pages={orders.pages}
                 actionNotDisplay
                 handlePageClick={({ selected }) =>

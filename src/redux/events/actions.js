@@ -48,14 +48,22 @@ export const fetchEvents = () => {
 
             let res = await debouncedFetchEvents("/cms/events", params);
 
+            let temp = [];
             res.data.data.forEach((res) => {
-                res.categoryName = res?.category?.name || "";
-                res.talentName = res?.talent?.name || "-";
+                temp.push({
+                    _id: res._id,
+                    title: res.title,
+                    date: res.date,
+                    venue: res.venueName,
+                    category: res?.category?.name || "",
+                    talent: res?.talent?.name || "-",
+                    status: res.statusEvent,
+                });
             });
 
             dispatch(
                 successFetchingEvents({
-                    events: res.data.data,
+                    events: temp,
                 })
             );
         } catch (error) {

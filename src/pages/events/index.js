@@ -79,7 +79,7 @@ function EventsPage() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const payload = {
-                    statusEvent: status === "Published" ? "Draft" : "Published",
+                    statusEvent: status === "PUBLISHED" ? "DRAFT" : "PUBLISHED",
                 };
                 const res = await putData(`/cms/events/${id}/status`, payload);
 
@@ -135,6 +135,7 @@ function EventsPage() {
                 <SAlert type={notif.typeNotif} message={notif.message} />
             )}
             <Table
+                size="sm"
                 status={events.status}
                 thead={[
                     "Judul",
@@ -142,15 +143,17 @@ function EventsPage() {
                     "Tempat",
                     "Kategori",
                     "Pembicara",
+                    "Status",
                     "Aksi",
                 ]}
                 data={events.data}
                 tbody={[
                     "title",
                     "date",
-                    "venueName",
-                    "categoryName",
-                    "talentName",
+                    "venue",
+                    "category",
+                    "talent",
+                    "status",
                 ]}
                 editUrl={`/events`}
                 deleteAction={(id) => handleDelete(id)}

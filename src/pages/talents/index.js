@@ -79,9 +79,7 @@ function TalentsPage() {
             <SBreadCrumb textSecond="Talents" />
 
             {access.tambah && (
-                <SButton
-                    className="mb-3"
-                    action={() => navigate("/talents/create")}>
+                <SButton action={() => navigate("/talents/create")}>
                     Tambah
                 </SButton>
             )}
