@@ -73,10 +73,10 @@ function SNavbar() {
                         Participant
                     </NavLink>
                     <NavLink
-                        to="/transactions"
+                        to="/orders"
                         role={role}
                         roles={accessOrders.lihat}>
-                        Transactions
+                        Orders
                     </NavLink>
                 </Nav>
                 <Nav className="justify-content-end">
