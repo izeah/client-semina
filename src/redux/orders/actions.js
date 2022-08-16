@@ -20,11 +20,12 @@ export const startFetchingOrders = () => {
     };
 };
 
-export const successFetchingOrders = ({ datas, pages }) => {
+export const successFetchingOrders = ({ datas, pages, total }) => {
     return {
         type: SUCCESS_FETCHING_ORDERS,
         datas,
         pages,
+        total,
     };
 };
 
@@ -73,6 +74,7 @@ export const fetchOrders = () => {
                 successFetchingOrders({
                     datas: temp,
                     pages: res.data.data.pages,
+                    total: res.data.data.total,
                 })
             );
         } catch (error) {

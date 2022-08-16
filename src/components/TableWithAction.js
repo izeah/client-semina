@@ -15,6 +15,9 @@ function TableWithAction({
     deleteAction,
     customAction,
     pages,
+    page,
+    limit,
+    total,
     status,
     size,
 }) {
@@ -33,7 +36,14 @@ function TableWithAction({
                 />
             </Table>
             {!withoutPagination && data.length ? (
-                <Pagination pages={pages} handlePageClick={handlePageClick} />
+                <Pagination
+                    currentDataLength={data.length}
+                    page={page}
+                    pages={pages}
+                    limit={limit}
+                    total={total}
+                    handlePageClick={handlePageClick}
+                />
             ) : (
                 ""
             )}

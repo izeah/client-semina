@@ -1,6 +1,7 @@
 import {
     ERROR_FETCHING_TALENTS,
     SET_KEYWORD,
+    SET_PAGE,
     START_FETCHING_TALENTS,
     SUCCESS_FETCHING_TALENTS,
 } from "./const";
@@ -17,10 +18,12 @@ export const startFetchingTalents = () => {
     };
 };
 
-export const successFetchingTalents = ({ talents }) => {
+export const successFetchingTalents = ({ datas, pages, total }) => {
     return {
         type: SUCCESS_FETCHING_TALENTS,
-        talents,
+        datas,
+        pages,
+        total,
     };
 };
 
@@ -40,22 +43,25 @@ export const fetchTalents = () => {
             }, 5000);
 
             let params = {
+                page: getState().talents?.page || 1,
+                limit: getState().talents?.limit || 10,
                 keyword: getState().talents.keyword,
             };
 
             let res = await debouncedFetchTalents("/cms/talents", params);
 
-            res.data.data.forEach((res) => {
+            res.data.data.datas.forEach((res) => {
                 res.avatar = res.image.name;
             });
 
             dispatch(
                 successFetchingTalents({
-                    talents: res.data.data,
+                    datas: res.data.data.datas,
+                    pages: res.data.data.pages,
+                    total: res.data.data.total,
                 })
             );
         } catch (err) {
-            console.log(err);
             dispatch(errorFetchingTalents());
         }
     };
@@ -65,5 +71,12 @@ export const setKeyword = (keyword) => {
     return {
         type: SET_KEYWORD,
         keyword,
+    };
+};
+
+export const setPage = (page) => {
+    return {
+        type: SET_PAGE,
+        page,
     };
 };

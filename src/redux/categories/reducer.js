@@ -17,8 +17,9 @@ const initialState = {
     status: statusList.idle,
     data: [],
     page: 1,
-    limit: 10,
     pages: 1,
+    limit: 10,
+    total: 0,
     keyword: "",
 };
 
@@ -35,6 +36,7 @@ export default function reducer(state = initialState, action) {
                 status: statusList.success,
                 data: action.datas,
                 pages: action.pages,
+                total: action.total,
             };
         case ERROR_FETCHING_CATEGORIES:
             return {

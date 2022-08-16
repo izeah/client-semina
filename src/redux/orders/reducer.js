@@ -16,8 +16,9 @@ const statuslist = {
 const initialState = {
     data: [],
     page: 1,
-    limit: 10,
     pages: 1,
+    limit: 10,
+    total: 0,
     date: {
         startDate: new Date(),
         endDate: new Date(),
@@ -40,6 +41,7 @@ export default function reducer(state = initialState, action) {
                 status: statuslist.success,
                 data: action.datas,
                 pages: action.pages,
+                total: action.total,
             };
 
         case SET_PAGE:

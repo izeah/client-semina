@@ -10,7 +10,7 @@ import SearchInput from "../../components/SearchInput";
 import Table from "../../components/TableWithAction";
 import { accessTalents } from "../../const/access";
 import { setNotif } from "../../redux/notif/actions";
-import { fetchTalents, setKeyword } from "../../redux/talents/actions";
+import { fetchTalents, setKeyword, setPage } from "../../redux/talents/actions";
 import { deleteData } from "../../utils/fetch";
 
 function TalentsPage() {
@@ -45,7 +45,7 @@ function TalentsPage() {
 
     useEffect(() => {
         dispatch(fetchTalents());
-    }, [dispatch, talents.keyword]);
+    }, [dispatch, talents.keyword, talents.page]);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -89,7 +89,10 @@ function TalentsPage() {
             <SearchInput
                 className="mb-3"
                 query={talents.keyword}
-                handleChange={(e) => dispatch(setKeyword(e.target.value))}
+                handleChange={(e) => {
+                    dispatch(setPage(1));
+                    dispatch(setKeyword(e.target.value));
+                }}
             />
 
             {notif.status && (
@@ -103,7 +106,13 @@ function TalentsPage() {
                 tbody={["name", "role", "avatar"]}
                 editUrl={access.tambah ? `/talents` : null}
                 deleteAction={access.hapus ? (id) => handleDelete(id) : null}
-                withoutPagination
+                handlePageClick={({ selected }) =>
+                    dispatch(setPage(selected + 1))
+                }
+                page={talents.page}
+                pages={talents.pages}
+                limit={talents.limit}
+                total={talents.total}
             />
         </Container>
     );

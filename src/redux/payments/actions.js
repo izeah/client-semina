@@ -50,7 +50,6 @@ export const fetchPayments = () => {
                 })
             );
         } catch (err) {
-            console.log(err);
             dispatch(errorFetchingPayments());
         }
     };

@@ -48,7 +48,7 @@ function OrdersPage() {
                         className="cursor-pointer position-relative mb-3"
                         readOnly
                     />
-                    {isShowed ? (
+                    {isShowed && (
                         <DateRange
                             date={orders.date}
                             setIsShowed={() => setIsShowed(!isShowed)}
@@ -56,8 +56,6 @@ function OrdersPage() {
                                 dispatch(setDate(ranges.selection))
                             }
                         />
-                    ) : (
-                        ""
                     )}
                 </Col>
             </Row>
@@ -84,7 +82,10 @@ function OrdersPage() {
                     "venueName",
                     "status",
                 ]}
+                page={orders.page}
                 pages={orders.pages}
+                limit={orders.limit}
+                total={orders.total}
                 actionNotDisplay
                 handlePageClick={({ selected }) =>
                     dispatch(setPage(selected + 1))

@@ -92,7 +92,10 @@ function CategoriesPage() {
                 <SearchInput
                     className="mb-3"
                     query={categories.keyword}
-                    handleChange={(e) => dispatch(setKeyword(e.target.value))}
+                    handleChange={(e) => {
+                        dispatch(setPage(1));
+                        dispatch(setKeyword(e.target.value));
+                    }}
                 />
 
                 {notif.status && (
@@ -108,7 +111,10 @@ function CategoriesPage() {
                     deleteAction={
                         access.hapus ? (id) => handleDelete(id) : null
                     }
+                    total={categories.total}
+                    limit={categories.limit}
                     pages={categories.pages}
+                    page={categories.page}
                     handlePageClick={({ selected }) =>
                         dispatch(setPage(selected + 1))
                     }

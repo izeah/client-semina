@@ -18,11 +18,12 @@ export const startFetchingCategories = () => {
     };
 };
 
-export const successFetchingCategories = ({ datas, pages }) => {
+export const successFetchingCategories = ({ datas, pages, total }) => {
     return {
         type: SUCCESS_FETCHING_CATEGORIES,
         datas,
         pages,
+        total,
     };
 };
 
@@ -52,10 +53,10 @@ export const fetchCategories = () => {
                 successFetchingCategories({
                     datas: res.data.data.datas,
                     pages: res.data.data.pages,
+                    total: res.data.data.total,
                 })
             );
         } catch (err) {
-            console.log(err);
             dispatch(errorFetchingCategories());
         }
     };

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Alert from "../../components/Alert";
-import BreadCrumb from "../../components/Breadcrumb";
+import SAlert from "../../components/Alert";
+import SBreadCrumb from "../../components/Breadcrumb";
 import {
     fetchListCategories,
     fetchListTalents,
@@ -18,25 +18,24 @@ function EventsCreate() {
     const lists = useSelector((state) => state.lists);
     const [form, setForm] = useState({
         title: "",
-        price: "",
         date: "",
         file: "",
         avatar: "",
         about: "",
         venueName: "",
         tagline: "",
-        keyPoint: [""],
+        keypoint: [""],
         tickets: [
             {
                 type: "",
-                status: "",
+                statusTicketCategory: false,
                 stock: "",
                 price: "",
+                expiredAt: new Date(),
             },
         ],
         category: "",
         talent: "",
-        stock: "",
     });
 
     const [alert, setAlert] = useState({
@@ -122,7 +121,7 @@ function EventsCreate() {
                 about: form.about,
                 venueName: form.venueName,
                 tagline: form.tagline,
-                keyPoint: form.keyPoint,
+                keypoint: form.keypoint,
                 category: form.category.value,
                 talent: form.talent.value,
                 status: form.status,
@@ -152,22 +151,22 @@ function EventsCreate() {
     };
 
     const handleChangeKeyPoint = (e, i) => {
-        let _temp = [...form.keyPoint];
+        let _temp = [...form.keypoint];
 
         _temp[i] = e.target.value;
 
-        setForm({ ...form, keyPoint: _temp });
+        setForm({ ...form, keypoint: _temp });
     };
 
     const handlePlusKeyPoint = (e) => {
-        let _temp = [...form.keyPoint];
+        let _temp = [...form.keypoint];
         _temp.push(e.target.value);
 
-        setForm({ ...form, keyPoint: _temp });
+        setForm({ ...form, keypoint: _temp });
     };
 
     const handleMinusKeyPoint = (index) => {
-        let _temp = [...form.keyPoint];
+        let _temp = [...form.keypoint];
         let removeIndex = _temp
             .map(function (_, i) {
                 return i;
@@ -175,7 +174,7 @@ function EventsCreate() {
             .indexOf(index);
 
         _temp.splice(removeIndex, 1);
-        setForm({ ...form, keyPoint: _temp });
+        setForm({ ...form, keypoint: _temp });
     };
 
     const handlePlusTicket = () => {
@@ -211,13 +210,13 @@ function EventsCreate() {
 
     return (
         <Container>
-            <BreadCrumb
+            <SBreadCrumb
                 textSecond={"Events"}
                 urlSecond={"/events"}
                 textThird="Create"
             />
             {alert.status && (
-                <Alert type={alert.type} message={alert.message} />
+                <SAlert type={alert.type} message={alert.message} />
             )}
             <Form
                 form={form}
