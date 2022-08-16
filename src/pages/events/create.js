@@ -70,12 +70,12 @@ function EventsCreate() {
                     2
                 );
 
-                if (size > 2) {
+                if (size > 3) {
                     setAlert({
                         ...alert,
                         status: true,
                         type: "danger",
-                        message: "Please select image size less than 3 MB",
+                        message: "Image size must be less than 3MB",
                     });
                     setForm({
                         ...form,
@@ -96,7 +96,7 @@ function EventsCreate() {
                     ...alert,
                     status: true,
                     type: "danger",
-                    message: "type image png | jpg | jpeg",
+                    message: "Image type must be jpg, jpeg or png",
                 });
                 setForm({
                     ...form,
@@ -105,8 +105,6 @@ function EventsCreate() {
                 });
             }
         } else if (e.target.name === "category" || e.target.name === "talent") {
-            console.log("e.target.name");
-            console.log(e.target.name);
             setForm({ ...form, [e.target.name]: e });
         } else {
             setForm({ ...form, [e.target.name]: e.target.value });
@@ -161,9 +159,9 @@ function EventsCreate() {
         setForm({ ...form, keyPoint: _temp });
     };
 
-    const handlePlusKeyPoint = () => {
+    const handlePlusKeyPoint = (e) => {
         let _temp = [...form.keyPoint];
-        _temp.push("");
+        _temp.push(e.target.value);
 
         setForm({ ...form, keyPoint: _temp });
     };

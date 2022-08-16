@@ -1,5 +1,6 @@
 import * as React from "react";
-import { DateRange } from "react-date-range";
+import { Col, Row } from "react-bootstrap";
+import { DateRange, DefinedRange } from "react-date-range";
 import * as locales from "react-date-range/dist/locale";
 
 function InputDate({ date, onChangeDate, setIsShowed }) {
@@ -24,17 +25,24 @@ function InputDate({ date, onChangeDate, setIsShowed }) {
     return (
         <div
             className="position-absolute"
-            style={{ zIndex: "1" }}
+            style={{ zIndex: "4" }}
             ref={refDate}>
-            <DateRange
-                locale={locales["id"]}
-                editableDateInputs={true}
-                onChange={onChangeDate}
-                moveRangeOnFirstSelection={false}
-                onRangeFocusChange={check}
-                ranges={[date]}
-                maxDate={new Date()}
-            />
+            <Row>
+                <Col xs={6} sm={4} md={4}>
+                    <DefinedRange onChange={onChangeDate} ranges={[date]} />
+                </Col>
+                <Col xs={6} sm={4} md={4}>
+                    <DateRange
+                        locale={locales["id"]}
+                        editableDateInputs={true}
+                        onChange={onChangeDate}
+                        moveRangeOnFirstSelection={false}
+                        onRangeFocusChange={check}
+                        ranges={[date]}
+                        maxDate={new Date()}
+                    />
+                </Col>
+            </Row>
         </div>
     );
 }

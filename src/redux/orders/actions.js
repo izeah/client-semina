@@ -9,6 +9,7 @@ import {
 import debounce from "debounce-promise";
 import moment from "moment";
 import { getData } from "../../utils/fetch";
+import { formatFullDate } from "../../utils/formatDate";
 import { clearNotif } from "../notif/actions";
 
 let debouncedFetchOrders = debounce(getData, 1000);
@@ -56,16 +57,13 @@ export const fetchOrders = () => {
             let res = await debouncedFetchOrders("/cms/orders", params);
 
             const temp = [];
-            moment.locale("id");
             res.data.data.order.forEach((res) => {
                 temp.push({
                     name: `${res.personalDetail.firstName} ${res.personalDetail.lastName}`,
                     email: res.personalDetail.email,
                     date: res.date,
                     title: res.historyEvent.title,
-                    eventDate: moment(res.historyEvent.date)
-                        .locale("id")
-                        .format("DD MMMM YYYY"),
+                    eventDate: formatFullDate(res.historyEvent.date),
                     venueName: res.historyEvent.venueName,
                     status: res.status,
                 });
