@@ -99,10 +99,13 @@ function EventsPage() {
     return (
         <Container className="mt-3">
             <SBreadCrumb textSecond="Events" />
-            <SButton action={() => navigate("/events/create")}>Tambah</SButton>
+            <SButton className="mb-3" action={() => navigate("/events/create")}>
+                Tambah
+            </SButton>
             <Row>
                 <Col>
                     <SearchInput
+                        className="mb-3"
                         query={events.keyword}
                         handleChange={(e) =>
                             dispatch(setKeyword(e.target.value))
@@ -117,7 +120,7 @@ function EventsPage() {
                         options={lists.categories}
                         isClearable={true}
                         handleChange={(e) => dispatch(setCategory(e))}
-                        className="mt-3"
+                        className="mb-3"
                     />
                 </Col>
                 <Col>
@@ -128,7 +131,7 @@ function EventsPage() {
                         options={lists.talents}
                         isClearable={true}
                         handleChange={(e) => dispatch(setTalent(e))}
-                        className="mt-3"
+                        className="mb-3"
                     />
                 </Col>
             </Row>

@@ -38,7 +38,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 status: statuslist.success,
-                data: action.orders,
+                data: action.datas,
                 pages: action.pages,
             };
 

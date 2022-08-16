@@ -45,7 +45,7 @@ function OrdersPage() {
                     <SearchInput
                         query={displayDate}
                         handleClick={() => setIsShowed(true)}
-                        className="cursor-pointer position-relative"
+                        className="cursor-pointer position-relative mb-3"
                         readOnly
                     />
                     {isShowed ? (

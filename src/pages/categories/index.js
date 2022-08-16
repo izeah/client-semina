@@ -6,9 +6,14 @@ import Swal from "sweetalert2";
 import SAlert from "../../components/Alert";
 import SBreadCrumb from "../../components/Breadcrumb";
 import SButton from "../../components/Button";
+import SearchInput from "../../components/SearchInput";
 import Table from "../../components/TableWithAction";
 import { accessCategories } from "../../const/access";
-import { fetchCategories } from "../../redux/categories/actions";
+import {
+    fetchCategories,
+    setKeyword,
+    setPage,
+} from "../../redux/categories/actions";
 import { setNotif } from "../../redux/notif/actions";
 import { deleteData } from "../../utils/fetch";
 
@@ -43,7 +48,7 @@ function CategoriesPage() {
 
     useEffect(() => {
         dispatch(fetchCategories());
-    }, [dispatch]);
+    }, [dispatch, categories.page, categories.keyword]);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -84,6 +89,12 @@ function CategoriesPage() {
                     </SButton>
                 )}
 
+                <SearchInput
+                    className="mb-3"
+                    query={categories.keyword}
+                    handleChange={(e) => dispatch(setKeyword(e.target.value))}
+                />
+
                 {notif.status && (
                     <SAlert type={notif.typeNotif} message={notif.message} />
                 )}
@@ -97,7 +108,10 @@ function CategoriesPage() {
                     deleteAction={
                         access.hapus ? (id) => handleDelete(id) : null
                     }
-                    withoutPagination
+                    pages={categories.pages}
+                    handlePageClick={({ selected }) =>
+                        dispatch(setPage(selected + 1))
+                    }
                 />
             </Container>
         </>

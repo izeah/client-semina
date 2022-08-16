@@ -10,7 +10,7 @@ function SearchInput({
     className,
 }) {
     return (
-        <Form.Group className="mt-3 mb-3">
+        <Form.Group className={className}>
             <Form.Control
                 type="text"
                 placeholder="Masukkan pencarian di sini"
@@ -19,7 +19,6 @@ function SearchInput({
                 onClick={handleClick}
                 value={query}
                 disabled={disabled}
-                className={className}
                 readOnly={readOnly}
             />
         </Form.Group>

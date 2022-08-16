@@ -79,12 +79,15 @@ function TalentsPage() {
             <SBreadCrumb textSecond="Talents" />
 
             {access.tambah && (
-                <SButton action={() => navigate("/talents/create")}>
+                <SButton
+                    className="mb-3"
+                    action={() => navigate("/talents/create")}>
                     Tambah
                 </SButton>
             )}
 
             <SearchInput
+                className="mb-3"
                 query={talents.keyword}
                 handleChange={(e) => dispatch(setKeyword(e.target.value))}
             />

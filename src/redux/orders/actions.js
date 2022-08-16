@@ -20,10 +20,10 @@ export const startFetchingOrders = () => {
     };
 };
 
-export const successFetchingOrders = ({ orders, pages }) => {
+export const successFetchingOrders = ({ datas, pages }) => {
     return {
         type: SUCCESS_FETCHING_ORDERS,
-        orders,
+        datas,
         pages,
     };
 };
@@ -57,7 +57,7 @@ export const fetchOrders = () => {
             let res = await debouncedFetchOrders("/cms/orders", params);
 
             const temp = [];
-            res.data.data.order.forEach((res) => {
+            res.data.data.datas.forEach((res) => {
                 temp.push({
                     name: `${res.personalDetail.firstName} ${res.personalDetail.lastName}`,
                     email: res.personalDetail.email,
@@ -71,7 +71,7 @@ export const fetchOrders = () => {
 
             dispatch(
                 successFetchingOrders({
-                    orders: temp,
+                    datas: temp,
                     pages: res.data.data.pages,
                 })
             );

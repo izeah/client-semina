@@ -1,5 +1,7 @@
 import {
     ERROR_FETCHING_CATEGORIES,
+    SET_KEYWORD,
+    SET_PAGE,
     START_FETCHING_CATEGORIES,
     SUCCESS_FETCHING_CATEGORIES,
 } from "./const";
@@ -16,10 +18,11 @@ export const startFetchingCategories = () => {
     };
 };
 
-export const successFetchingCategories = ({ categories }) => {
+export const successFetchingCategories = ({ datas, pages }) => {
     return {
         type: SUCCESS_FETCHING_CATEGORIES,
-        categories,
+        datas,
+        pages,
     };
 };
 
@@ -30,7 +33,7 @@ export const errorFetchingCategories = () => {
 };
 
 export const fetchCategories = () => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         dispatch(startFetchingCategories());
 
         try {
@@ -38,15 +41,36 @@ export const fetchCategories = () => {
                 dispatch(clearNotif());
             }, 5000);
 
-            let res = await debouncedFetchCategories("/cms/categories");
+            let params = {
+                keyword: getState().categories?.keyword,
+                page: getState().categories?.page || 1,
+                limit: getState().categories?.limit || 10,
+            };
+
+            let res = await debouncedFetchCategories("/cms/categories", params);
             dispatch(
                 successFetchingCategories({
-                    categories: res.data.data,
+                    datas: res.data.data.datas,
+                    pages: res.data.data.pages,
                 })
             );
         } catch (err) {
             console.log(err);
             dispatch(errorFetchingCategories());
         }
+    };
+};
+
+export const setPage = (page) => {
+    return {
+        type: SET_PAGE,
+        page,
+    };
+};
+
+export const setKeyword = (keyword) => {
+    return {
+        type: SET_KEYWORD,
+        keyword,
     };
 };
