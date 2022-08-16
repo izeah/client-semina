@@ -10,9 +10,10 @@ function SelectBox({
     placeholder,
     handleChange,
     label,
+    className,
 }) {
     return (
-        <Form.Group className="mt-3 mb-3">
+        <Form.Group className={className}>
             {label && <Form.Label>{label}</Form.Label>}
             <Select
                 name={name}

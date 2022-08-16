@@ -117,6 +117,7 @@ function EventsPage() {
                         options={lists.categories}
                         isClearable={true}
                         handleChange={(e) => dispatch(setCategory(e))}
+                        className="mt-3"
                     />
                 </Col>
                 <Col>
@@ -127,6 +128,7 @@ function EventsPage() {
                         options={lists.talents}
                         isClearable={true}
                         handleChange={(e) => dispatch(setTalent(e))}
+                        className="mt-3"
                     />
                 </Col>
             </Row>
