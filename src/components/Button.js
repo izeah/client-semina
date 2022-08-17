@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 
 function SButton({
     children,
@@ -17,6 +17,18 @@ function SButton({
             size={size}
             disabled={disabled}
             className={className}>
+            {loading ? (
+                <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    style={{ marginRight: "5px" }}
+                />
+            ) : (
+                ""
+            )}
             {loading ? "Loading..." : children}
         </Button>
     );
