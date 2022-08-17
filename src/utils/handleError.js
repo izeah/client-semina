@@ -1,98 +1,57 @@
+import axios from "axios";
+import { seminaApiUrl } from "../config";
+
 const handleError = (error) => {
-    let dataErr = {};
-    let setMessage = "";
-    let setStep = "";
-    const { response, message } = error;
-    const status = response ? response.status : null;
+    // console.log("Error response");
+    // console.log(error?.response?.data?.msg || null);
+    // console.log("Error");
+    // console.log(error);
+    // console.log("Status Code");
+    // console.log(error?.response?.status);
+    // console.log("Message");
+    // console.log(error?.message);
 
-    try {
-        setMessage = response?.data?.data?.message || message;
-        setStep = response?.data?.data?.step || "";
-    } catch (e) {
-        console.log(e);
+    const originalRequest = error.config;
+    // console.log("originalRequest");
+    // console.log(originalRequest);
+
+    if (error?.response?.data?.msg === "jwt expired") {
+        originalRequest._retry = true;
+        const session = localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth"))
+            : {};
+
+        return axios
+            .get(`${seminaApiUrl}/cms/refresh-token/${session.refreshToken}`)
+            .then((res) => {
+                if (res.data.data) {
+                    // console.log("res.data");
+                    // console.log(res.data);
+
+                    localStorage.setItem(
+                        "auth",
+                        JSON.stringify({
+                            ...session,
+                            token: res.data.data.token,
+                        })
+                    );
+                    originalRequest.headers.Authorization = `Bearer ${res.data.data.token}`;
+                    return axios(originalRequest);
+                }
+            })
+            .catch((err) => {
+                // console.log("error disini");
+                // console.log(err.response);
+                // console.log(err?.response?.data?.msg);
+
+                if (err?.response?.data?.msg === "jwt expired") {
+                    window.location.href = "/login";
+                    localStorage.removeItem("auth");
+                }
+            });
     }
 
-    switch (status) {
-        case 400:
-            dataErr = {
-                data: response,
-                code: response.status,
-                message: response?.data?.message || setMessage,
-                desc: "Bad Request",
-            };
-            break;
-        case 401:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: "Unauthorized",
-            };
-
-            localStorage.clear();
-            window.location.href = `${window.location.origin}/login`;
-
-            break;
-        case 402:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: "Payment Required",
-            };
-            break;
-        case 403:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: "Forbidden",
-            };
-            break;
-        case 404:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: "Not Found",
-            };
-            break;
-        case 409:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: "Conflict",
-            };
-            break;
-        case 422:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: response.data.response.message,
-                step: setStep,
-            };
-            break;
-        case 500:
-            dataErr = {
-                code: response.status,
-                message: setMessage,
-                desc: "Internal Server Error",
-            };
-
-            if (
-                message === "jwt expired" ||
-                response?.data?.msg === "jwt expired"
-            ) {
-                localStorage.clear();
-                window.location.href = `${window.location.origin}/login`;
-            }
-
-            break;
-        default:
-            dataErr = {
-                code: 404,
-                message: setMessage,
-                desc: message,
-            };
-    }
-
-    return dataErr;
+    return error;
 };
 
 export default handleError;

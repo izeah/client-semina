@@ -1,11 +1,12 @@
 import { USER_LOGIN, USER_LOGOUT } from "./const";
 
-export function userLogin(token, role, username) {
+export function userLogin(token, role, email, refreshToken) {
     return {
         type: USER_LOGIN,
         token,
         role,
-        username,
+        email,
+        refreshToken,
     };
 }
 
