@@ -5,6 +5,7 @@ import {
     ERROR_FETCHING_EVENTS,
     SET_CATEGORY,
     SET_KEYWORD,
+    SET_PAGE,
     SET_TALENT,
     START_FETCHING_EVENTS,
     SUCCESS_FETCHING_EVENTS,
@@ -18,10 +19,12 @@ export const startFetchingEvents = () => {
     };
 };
 
-export const successFetchingEvents = ({ events }) => {
+export const successFetchingEvents = ({ datas, pages, total }) => {
     return {
         type: SUCCESS_FETCHING_EVENTS,
-        events,
+        datas,
+        pages,
+        total,
     };
 };
 
@@ -41,15 +44,26 @@ export const fetchEvents = () => {
             }, 5000);
 
             let params = {
+                page: getState().events.page,
+                limit: getState().events.limit,
                 title: getState().events.keyword,
-                category: getState().events?.category?.value || "",
-                talent: getState().events?.talent?.value || "",
+                // category: getState().events?.category?.value || "", // for single value
+                // talent: getState().events?.talent?.value || "", // for single value
             };
+
+            // filter category by array value
+            params["category"] = getState().events?.category
+                ? getState().events.category.map((item) => item.value)
+                : [];
+
+            params["talent"] = getState().events?.talent
+                ? getState().events.talent.map((item) => item.value)
+                : [];
 
             let res = await debouncedFetchEvents("/cms/events", params);
 
             let temp = [];
-            res.data.data.forEach((res) => {
+            res.data.data.datas.forEach((res) => {
                 temp.push({
                     _id: res._id,
                     title: res.title,
@@ -63,7 +77,9 @@ export const fetchEvents = () => {
 
             dispatch(
                 successFetchingEvents({
-                    events: temp,
+                    datas: temp,
+                    pages: res.data.data.pages,
+                    total: res.data.data.total,
                 })
             );
         } catch (error) {
@@ -90,5 +106,12 @@ export const setTalent = (talent) => {
     return {
         type: SET_TALENT,
         talent,
+    };
+};
+
+export const setPage = (page) => {
+    return {
+        type: SET_PAGE,
+        page,
     };
 };

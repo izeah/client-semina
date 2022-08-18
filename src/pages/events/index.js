@@ -9,10 +9,12 @@ import SButton from "../../components/Button";
 import SearchInput from "../../components/SearchInput";
 import SelectBox from "../../components/SelectBox";
 import Table from "../../components/TableWithAction";
+
 import {
     fetchEvents,
     setCategory,
     setKeyword,
+    setPage,
     setTalent,
 } from "../../redux/events/actions";
 import {
@@ -32,7 +34,7 @@ function EventsPage() {
 
     useEffect(() => {
         dispatch(fetchEvents());
-    }, [dispatch, events.keyword, events.category, events.talent]);
+    }, [dispatch, events.page, events.keyword, events.category, events.talent]);
 
     useEffect(() => {
         dispatch(fetchListCategories());
@@ -107,9 +109,10 @@ function EventsPage() {
                     <SearchInput
                         className="mb-3"
                         query={events.keyword}
-                        handleChange={(e) =>
-                            dispatch(setKeyword(e.target.value))
-                        }
+                        handleChange={(e) => {
+                            dispatch(setPage(1));
+                            dispatch(setKeyword(e.target.value));
+                        }}
                     />
                 </Col>
                 <Col>
@@ -119,8 +122,12 @@ function EventsPage() {
                         value={events.category}
                         options={lists.categories}
                         isClearable={true}
-                        handleChange={(e) => dispatch(setCategory(e))}
+                        handleChange={(e) => {
+                            dispatch(setPage(1));
+                            dispatch(setCategory(e));
+                        }}
                         className="mb-3"
+                        isMulti={true}
                     />
                 </Col>
                 <Col>
@@ -130,8 +137,12 @@ function EventsPage() {
                         value={events.talent}
                         options={lists.talents}
                         isClearable={true}
-                        handleChange={(e) => dispatch(setTalent(e))}
+                        handleChange={(e) => {
+                            dispatch(setPage(1));
+                            dispatch(setTalent(e));
+                        }}
                         className="mb-3"
+                        isMulti={true}
                     />
                 </Col>
             </Row>
@@ -173,7 +184,13 @@ function EventsPage() {
                         </SButton>
                     );
                 }}
-                withoutPagination
+                handlePageClick={({ selected }) =>
+                    dispatch(setPage(selected + 1))
+                }
+                page={events.page}
+                pages={events.pages}
+                limit={events.limit}
+                total={events.total}
             />
         </Container>
     );

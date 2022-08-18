@@ -85,7 +85,7 @@ export const fetchListTalents = () => {
 
             let temp = [];
 
-            res.data.data.forEach((res) => {
+            res.data.data.datas.forEach((res) => {
                 temp.push({
                     value: res._id,
                     label: res.name,
@@ -128,7 +128,7 @@ export const fetchListEvents = () => {
 
             let temp = [];
 
-            res.data.data.forEach((res) => {
+            res.data.data.datas.forEach((res) => {
                 temp.push({
                     value: res._id,
                     label: res.name,

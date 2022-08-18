@@ -11,6 +11,7 @@ function SelectBox({
     handleChange,
     label,
     className,
+    isMulti,
 }) {
     return (
         <Form.Group className={className}>
@@ -22,6 +23,7 @@ function SelectBox({
                 options={options}
                 onChange={handleChange}
                 value={value}
+                isMulti={isMulti}
             />
         </Form.Group>
     );
