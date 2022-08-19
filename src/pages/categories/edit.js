@@ -34,6 +34,7 @@ function CategoriesEdit() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
         try {
             const res = await putData(`/cms/categories/${id}`, form);
             dispatch(
@@ -43,14 +44,27 @@ function CategoriesEdit() {
                     `berhasil ubah kategori ${res.data.data.name}`
                 )
             );
+
             navigate("/categories");
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
             setAlert({
+                ...alert,
                 status: true,
                 type: "danger",
-                message: err.response.data.msg,
+                message:
+                    err.response.data.msg instanceof Array ? (
+                        <ul>
+                            {err.response.data.msg.map((item, index) => {
+                                return <li key={index}>{item}</li>;
+                            })}
+                        </ul>
+                    ) : typeof err.response.data.msg === "string" ? (
+                        err.response.data.msg
+                    ) : (
+                        "Something went wrong"
+                    ),
             });
         }
     };

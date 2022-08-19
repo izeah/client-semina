@@ -40,11 +40,12 @@ const handleError = (error) => {
                 }
             })
             .catch((err) => {
+                // expired pada saat refresh token (refresh token sudah expired, jadi harus login kembali)
                 // console.log("error disini");
                 // console.log(err.response);
                 // console.log(err?.response?.data?.msg);
 
-                if (err?.response?.data?.msg === "jwt expired") {
+                if (err.response?.data?.msg === "jwt expired") {
                     window.location.href = "/login";
                     localStorage.removeItem("auth");
                 }

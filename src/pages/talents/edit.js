@@ -102,15 +102,15 @@ function TalentsEdit() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
+        const payload = {
+            image: form.file,
+            role: form.role,
+            name: form.name,
+        };
+
         try {
-            const payload = {
-                image: form.file,
-                role: form.role,
-                name: form.name,
-            };
-
             const res = await putData(`/cms/talents/${id}`, payload);
-
             dispatch(
                 setNotif(
                     true,
@@ -118,6 +118,7 @@ function TalentsEdit() {
                     `berhasil ubah talent ${res.data.data.name}`
                 )
             );
+
             navigate("/talents");
             setIsLoading(false);
         } catch (err) {
@@ -126,7 +127,18 @@ function TalentsEdit() {
                 ...alert,
                 status: true,
                 type: "danger",
-                message: err?.response?.data?.msg || "Something went wrong",
+                message:
+                    err.response.data.msg instanceof Array ? (
+                        <ul>
+                            {err.response.data.msg.map((item, index) => {
+                                return <li key={index}>{item}</li>;
+                            })}
+                        </ul>
+                    ) : typeof err.response.data.msg === "string" ? (
+                        err.response.data.msg
+                    ) : (
+                        "Something went wrong"
+                    ),
             });
         }
     };

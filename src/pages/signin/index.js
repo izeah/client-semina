@@ -31,6 +31,7 @@ function SigninPage() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
         try {
             const res = await postData("/cms/auth/signin", form);
 
@@ -49,7 +50,7 @@ function SigninPage() {
             setIsLoading(false);
             setAlert({
                 status: true,
-                message: err?.response?.data?.msg || "Internal Server Error",
+                message: err.response.data.msg || "Something went wrong",
                 type: "danger",
             });
         }

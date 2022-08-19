@@ -87,14 +87,14 @@ function PaymentsCreate() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
+        const payload = {
+            image: form.file,
+            type: form.type,
+        };
+
         try {
-            const payload = {
-                image: form.file,
-                type: form.type,
-            };
-
             const res = await postData("/cms/payments", payload);
-
             dispatch(
                 setNotif(
                     true,
@@ -111,7 +111,18 @@ function PaymentsCreate() {
                 ...alert,
                 status: true,
                 type: "danger",
-                message: err?.response?.data?.msg || "Something went wrong",
+                message:
+                    err.response.data.msg instanceof Array ? (
+                        <ul>
+                            {err.response.data.msg.map((item, index) => {
+                                return <li key={index}>{item}</li>;
+                            })}
+                        </ul>
+                    ) : typeof err.response.data.msg === "string" ? (
+                        err.response.data.msg
+                    ) : (
+                        "Something went wrong"
+                    ),
             });
         }
     };
