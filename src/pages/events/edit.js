@@ -13,11 +13,13 @@ import { setNotif } from "../../redux/notif/actions";
 import { getData, postData, putData } from "../../utils/fetch";
 import Form from "./form";
 
-function EventsCreate() {
+function EventsEdit() {
     const navigate = useNavigate();
-    const { eventId } = useParams();
     const dispatch = useDispatch();
+
+    const { id } = useParams();
     const lists = useSelector((state) => state.lists);
+
     const [form, setForm] = useState({
         title: "",
         date: "",
@@ -26,13 +28,14 @@ function EventsCreate() {
         about: "",
         venueName: "",
         tagline: "",
-        keyPoint: [""],
+        keypoint: [],
         tickets: [
             {
                 type: "",
-                status: "",
                 stock: "",
                 price: "",
+                expiredAt: new Date(),
+                statusTicketCategory: false,
             },
         ],
         category: "",
@@ -47,38 +50,64 @@ function EventsCreate() {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchOneCategories = async () => {
-        const res = await getData(`/cms/events/${eventId}`);
+    const statusTicketCategoryOptions = [
+        {
+            value: true,
+            label: "Aktif",
+            target: { value: true, name: "statusTicketCategory" },
+        },
+        {
+            value: false,
+            label: "Non-Aktif",
+            target: { value: false, name: "statusTicketCategory" },
+        },
+    ];
+
+    const fetchOneEvent = async () => {
+        const res = await getData(`/cms/events/${id}`);
 
         setForm({
             ...form,
             title: res.data.data.title,
-            date: moment(res.data.data.date).format("YYYY-MM-DDTHH:SS"),
+            date: moment(res.data.data.date).format("YYYY-MM-DD HH:mm"),
             file: res.data.data.image._id,
             avatar: res.data.data.image.name,
             about: res.data.data.about,
             venueName: res.data.data.venueName,
             tagline: res.data.data.tagline,
-            keyPoint: res.data.data.keyPoint,
+            keypoint: res.data.data.keypoint,
             category: {
+                value: res?.data?.data?.category?._id,
                 label: res?.data?.data?.category?.name,
                 target: {
                     name: "category",
                     value: res?.data?.data?.category?._id,
                 },
-                value: res?.data?.data?.category?._id,
             },
             talent: {
+                value: res?.data?.data?.talent?._id,
                 label: res?.data?.data?.talent?.name,
                 target: { name: "talent", value: res?.data?.data?.talent?._id },
-                value: res?.data?.data?.talent?._id,
             },
-            tickets: res.data.data.tickets,
+            tickets: res?.data?.data?.tickets?.map((tic) => {
+                return {
+                    ...tic,
+                    expiredAt: moment(tic.expiredAt).format("YYYY-MM-DD"),
+                    statusTicketCategory: {
+                        value: tic.statusTicketCategory ? true : false,
+                        label: tic.statusTicketCategory ? "Aktif" : "Non-Aktif",
+                        target: {
+                            name: "statusTicketCategory",
+                            value: tic.statusTicketCategory ? true : false,
+                        },
+                    },
+                };
+            }),
         });
     };
 
     useEffect(() => {
-        fetchOneCategories();
+        fetchOneEvent();
     }, []);
 
     useEffect(() => {
@@ -104,12 +133,12 @@ function EventsCreate() {
                     2
                 );
 
-                if (size > 2) {
+                if (size > 3) {
                     setAlert({
                         ...alert,
                         status: true,
                         type: "danger",
-                        message: "Please select image size less than 3 MB",
+                        message: "Image size must be less than 3MB",
                     });
                     setForm({
                         ...form,
@@ -130,7 +159,7 @@ function EventsCreate() {
                     ...alert,
                     status: true,
                     type: "danger",
-                    message: "type image png | jpg | jpeg",
+                    message: "Image type must be jpg, jpeg or png",
                 });
                 setForm({
                     ...form,
@@ -147,6 +176,7 @@ function EventsCreate() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
         try {
             const payload = {
                 date: form.date,
@@ -156,15 +186,19 @@ function EventsCreate() {
                 about: form.about,
                 venueName: form.venueName,
                 tagline: form.tagline,
-                keyPoint: form.keyPoint,
+                keypoint: form.keypoint,
                 category: form.category.value,
                 talent: form.talent.value,
                 status: form.status,
-                tickets: form.tickets,
+                tickets: form.tickets.map((tic) => {
+                    return {
+                        ...tic,
+                        statusTicketCategory: tic.statusTicketCategory.value,
+                    };
+                }),
             };
 
-            const res = await putData(`/cms/events/${eventId}`, payload);
-
+            const res = await putData(`/cms/events/${id}`, payload);
             dispatch(
                 setNotif(
                     true,
@@ -181,28 +215,39 @@ function EventsCreate() {
                 ...alert,
                 status: true,
                 type: "danger",
-                message: err.response.data.msg,
+                message:
+                    err.response.data.msg instanceof Array ? (
+                        <ul>
+                            {err.response.data.msg.map((item, index) => {
+                                return <li key={index}>{item}</li>;
+                            })}
+                        </ul>
+                    ) : typeof err.response.data.msg === "string" ? (
+                        err.response.data.msg
+                    ) : (
+                        "Something went wrong"
+                    ),
             });
         }
     };
 
     const handleChangeKeyPoint = (e, i) => {
-        let _temp = [...form.keyPoint];
+        let _temp = [...form.keypoint];
 
         _temp[i] = e.target.value;
 
-        setForm({ ...form, keyPoint: _temp });
+        setForm({ ...form, keypoint: _temp });
     };
 
     const handlePlusKeyPoint = () => {
-        let _temp = [...form.keyPoint];
+        let _temp = [...form.keypoint];
         _temp.push("");
 
-        setForm({ ...form, keyPoint: _temp });
+        setForm({ ...form, keypoint: _temp });
     };
 
     const handleMinusKeyPoint = (index) => {
-        let _temp = [...form.keyPoint];
+        let _temp = [...form.keypoint];
         let removeIndex = _temp
             .map(function (_, i) {
                 return i;
@@ -210,7 +255,7 @@ function EventsCreate() {
             .indexOf(index);
 
         _temp.splice(removeIndex, 1);
-        setForm({ ...form, keyPoint: _temp });
+        setForm({ ...form, keypoint: _temp });
     };
 
     const handlePlusTicket = () => {
@@ -239,7 +284,11 @@ function EventsCreate() {
     const handleChangeTicket = (e, i) => {
         let _temp = [...form.tickets];
 
-        _temp[i][e.target.name] = e.target.value;
+        if (e.target.name === "statusTicketCategory") {
+            _temp[i][e.target.name] = e;
+        } else {
+            _temp[i][e.target.name] = e.target.value;
+        }
 
         setForm({ ...form, tickets: _temp });
     };
@@ -249,7 +298,7 @@ function EventsCreate() {
             <BreadCrumb
                 textSecond={"Events"}
                 urlSecond={"/events"}
-                textThird="Create"
+                textThird="Edit"
             />
             {alert.status && (
                 <Alert type={alert.type} message={alert.message} />
@@ -258,6 +307,7 @@ function EventsCreate() {
                 form={form}
                 isLoading={isLoading}
                 lists={lists}
+                statusTicketCategoryOptions={statusTicketCategoryOptions}
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}
                 handleChangeKeyPoint={handleChangeKeyPoint}
@@ -272,4 +322,4 @@ function EventsCreate() {
     );
 }
 
-export default EventsCreate;
+export default EventsEdit;

@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Card,
     CloseButton,
     Col,
     Figure,
@@ -8,12 +9,13 @@ import {
     InputGroup,
     Row,
 } from "react-bootstrap";
-import Button from "../../components/Button";
+import SButton from "../../components/Button";
 import SelectBox from "../../components/SelectBox";
 import TextInputWithLabel from "../../components/TextInputWithLabel";
 import { seminaImageUrl } from "../../config";
 
-export default function EventsForm({
+function SForm({
+    statusTicketCategoryOptions,
     handleSubmit,
     form,
     handleChange,
@@ -97,43 +99,50 @@ export default function EventsForm({
                 </Col>
             </Row>
 
-            <Form.Label>Key Point</Form.Label>
-            <Row>
-                {form.keypoint.map((key, index) => (
-                    <Col sm={6}>
-                        <InputGroup className="mb-3" key={index}>
-                            <FormControl
-                                placeholder="Masukan keypoint"
-                                value={key}
-                                type="text"
-                                name="key"
-                                onChange={(e) => {
-                                    handleChangeKeyPoint(e, index);
-                                }}
-                            />
-                            {index !== 0 && (
-                                <InputGroup.Text id="basic-addon2">
-                                    <CloseButton
-                                        onClick={() =>
-                                            handleMinusKeyPoint(index)
-                                        }
+            {/* keypoint */}
+            <Card className="mb-3">
+                <Card.Body>
+                    <Card.Title>Key Point</Card.Title>
+                    <Row>
+                        {form.keypoint.map((key, index) => (
+                            <Col md={6} key={index}>
+                                <InputGroup className="mb-3">
+                                    <FormControl
+                                        placeholder="Masukan keypoint"
+                                        value={key}
+                                        type="text"
+                                        name="key"
+                                        onChange={(e) => {
+                                            handleChangeKeyPoint(e, index);
+                                        }}
                                     />
-                                </InputGroup.Text>
-                            )}
-                        </InputGroup>
-                    </Col>
-                ))}
-            </Row>
-
-            <Button variant="success" action={handlePlusKeyPoint} size="sm">
-                Tambah keypoint
-            </Button>
+                                    {index !== 0 && (
+                                        <InputGroup.Text id="basic-addon2">
+                                            <CloseButton
+                                                onClick={() =>
+                                                    handleMinusKeyPoint(index)
+                                                }
+                                            />
+                                        </InputGroup.Text>
+                                    )}
+                                </InputGroup>
+                            </Col>
+                        ))}
+                    </Row>
+                    <SButton
+                        variant="success"
+                        action={handlePlusKeyPoint}
+                        size="sm">
+                        Tambah keypoint
+                    </SButton>
+                </Card.Body>
+            </Card>
 
             <Row>
                 <Col>
                     <SelectBox
-                        label={"Speaker"}
-                        placeholder={"Masukan pembica"}
+                        label={"Pembicara"}
+                        placeholder={"Masukan pembicara"}
                         name="talent"
                         value={form.talent}
                         options={lists.talents}
@@ -146,7 +155,6 @@ export default function EventsForm({
                         placeholder={"Masukan Avatar"}
                         label={"Cover"}
                         name="avatar"
-                        // value={form.avatar}
                         type="file"
                         onChange={handleChange}
                     />
@@ -169,70 +177,105 @@ export default function EventsForm({
                 </Col>
             </Row>
 
-            <Form.Label>Tiket</Form.Label>
+            {/* Tickets */}
+            <Card className="mb-3">
+                <Card.Body>
+                    <Card.Title>Tiket</Card.Title>
+                    {form.tickets.map((tic, index) => (
+                        <Row key={index}>
+                            <Col md={4}>
+                                <TextInputWithLabel
+                                    placeholder={"Masukan tipe tiket"}
+                                    label={"Tipe"}
+                                    name="type"
+                                    value={tic.type}
+                                    type="text"
+                                    onChange={(e) =>
+                                        handleChangeTicket(e, index)
+                                    }
+                                />
+                            </Col>
+                            <Col md={4}>
+                                <TextInputWithLabel
+                                    placeholder={"Masukan Harga"}
+                                    label={"Harga"}
+                                    name="price"
+                                    value={tic.price}
+                                    type="number"
+                                    onChange={(e) =>
+                                        handleChangeTicket(e, index)
+                                    }
+                                />
+                            </Col>
+                            <Col md={4}>
+                                <TextInputWithLabel
+                                    placeholder={"Masukan stok tiket"}
+                                    label={"Stock"}
+                                    name="stock"
+                                    value={tic.stock}
+                                    type="number"
+                                    onChange={(e) =>
+                                        handleChangeTicket(e, index)
+                                    }
+                                />
+                            </Col>
+                            <Col md={6}>
+                                <Form.Label>Status</Form.Label>
+                                <SelectBox
+                                    placeholder="Masukan status"
+                                    name="statusTicketCategory"
+                                    value={tic.statusTicketCategory}
+                                    options={statusTicketCategoryOptions}
+                                    isClearable={true}
+                                    handleChange={(e) =>
+                                        handleChangeTicket(e, index)
+                                    }
+                                />
+                            </Col>
+                            <Col md={index !== 0 ? 5 : 6}>
+                                <TextInputWithLabel
+                                    placeholder={"Masukan tanggal expired"}
+                                    label={"Expired Date"}
+                                    name="expiredAt"
+                                    value={tic.expiredAt}
+                                    type="date"
+                                    onChange={(e) =>
+                                        handleChangeTicket(e, index)
+                                    }
+                                />
+                            </Col>
+                            {index !== 0 && (
+                                <Col
+                                    md={1}
+                                    className="d-flex justify-content-end align-items-center">
+                                    <CloseButton
+                                        onClick={() => handleMinusTicket(index)}
+                                    />
+                                </Col>
+                            )}
+                        </Row>
+                    ))}
+                    <div className="mb-3">
+                        <SButton
+                            variant="success"
+                            action={handlePlusTicket}
+                            size="sm">
+                            Tambah Ticket
+                        </SButton>
+                    </div>
+                </Card.Body>
+            </Card>
 
-            {form.tickets.map((tic, index) => (
-                <Row>
-                    <Col sm={6}>
-                        <TextInputWithLabel
-                            placeholder={"Masukan tipe tiket"}
-                            label={"type"}
-                            name="type"
-                            value={tic.type}
-                            type="text"
-                            onChange={(e) => handleChangeTicket(e, index)}
-                        />
-                    </Col>
-                    <Col sm={6}>
-                        <TextInputWithLabel
-                            placeholder={"Masukan Harga"}
-                            label={"Harga"}
-                            name="price"
-                            value={tic.price}
-                            type="number"
-                            onChange={(e) => handleChangeTicket(e, index)}
-                        />
-                    </Col>
-                    <Col sm={6}>
-                        <TextInputWithLabel
-                            placeholder={"Masukan tipe tiket"}
-                            label={"Stock"}
-                            name="stock"
-                            value={tic.stock}
-                            type="number"
-                            onChange={(e) => handleChangeTicket(e, index)}
-                        />
-                    </Col>
-                    <Col sm={index !== 0 ? 5 : 6}>
-                        <TextInputWithLabel
-                            placeholder={"Masukan status"}
-                            label={"Status"}
-                            name="status"
-                            value={tic.status}
-                            type="text"
-                            onChange={(e) => handleChangeTicket(e, index)}
-                        />
-                    </Col>
-                    {index !== 0 && (
-                        <Col
-                            sm={1}
-                            className="d-flex justify-content-end align-items-center">
-                            <CloseButton
-                                onClick={() => handleMinusTicket(index)}
-                            />
-                        </Col>
-                    )}
-                </Row>
-            ))}
-            <div className="mb-3">
-                <Button variant="success" action={handlePlusTicket} size="sm">
-                    Tambah Ticket
-                </Button>
+            <div className="d-grid">
+                <SButton
+                    variant="primary"
+                    action={handleSubmit}
+                    loading={isLoading}>
+                    {edit ? "Ubah" : "Simpan"}
+                </SButton>
             </div>
-
-            <Button variant="primary" action={handleSubmit} loading={isLoading}>
-                {edit ? "Ubah" : "Simpan"}
-            </Button>
         </Form>
     );
 }
+
+export default SForm;

@@ -15,7 +15,9 @@ import Form from "./form";
 function EventsCreate() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const lists = useSelector((state) => state.lists);
+
     const [form, setForm] = useState({
         title: "",
         date: "",
@@ -24,14 +26,14 @@ function EventsCreate() {
         about: "",
         venueName: "",
         tagline: "",
-        keypoint: [""],
+        keypoint: [],
         tickets: [
             {
                 type: "",
-                statusTicketCategory: false,
                 stock: "",
                 price: "",
                 expiredAt: new Date(),
+                statusTicketCategory: false,
             },
         ],
         category: "",
@@ -45,6 +47,19 @@ function EventsCreate() {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const statusTicketCategoryOptions = [
+        {
+            value: true,
+            label: "Aktif",
+            target: { value: true, name: "statusTicketCategory" },
+        },
+        {
+            value: false,
+            label: "Non-Aktif",
+            target: { value: false, name: "statusTicketCategory" },
+        },
+    ];
 
     useEffect(() => {
         dispatch(fetchListTalents());
@@ -112,6 +127,7 @@ function EventsCreate() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
         try {
             const payload = {
                 date: form.date,
@@ -125,11 +141,15 @@ function EventsCreate() {
                 category: form.category.value,
                 talent: form.talent.value,
                 status: form.status,
-                tickets: form.tickets,
+                tickets: form.tickets.map((tic) => {
+                    return {
+                        ...tic,
+                        statusTicketCategory: tic.statusTicketCategory.value,
+                    };
+                }),
             };
 
             const res = await postData("/cms/events", payload);
-
             dispatch(
                 setNotif(
                     true,
@@ -137,6 +157,7 @@ function EventsCreate() {
                     `berhasil tambah events ${res.data.data.title}`
                 )
             );
+
             navigate("/events");
             setIsLoading(false);
         } catch (err) {
@@ -145,7 +166,18 @@ function EventsCreate() {
                 ...alert,
                 status: true,
                 type: "danger",
-                message: err.response.data.msg,
+                message:
+                    err.response.data.msg instanceof Array ? (
+                        <ul>
+                            {err.response.data.msg.map((item, index) => {
+                                return <li key={index}>{item}</li>;
+                            })}
+                        </ul>
+                    ) : typeof err.response.data.msg === "string" ? (
+                        err.response.data.msg
+                    ) : (
+                        "Something went wrong"
+                    ),
             });
         }
     };
@@ -158,9 +190,9 @@ function EventsCreate() {
         setForm({ ...form, keypoint: _temp });
     };
 
-    const handlePlusKeyPoint = (e) => {
+    const handlePlusKeyPoint = () => {
         let _temp = [...form.keypoint];
-        _temp.push(e.target.value);
+        _temp.push("");
 
         setForm({ ...form, keypoint: _temp });
     };
@@ -203,7 +235,11 @@ function EventsCreate() {
     const handleChangeTicket = (e, i) => {
         let _temp = [...form.tickets];
 
-        _temp[i][e.target.name] = e.target.value;
+        if (e.target.name === "statusTicketCategory") {
+            _temp[i][e.target.name] = e;
+        } else {
+            _temp[i][e.target.name] = e.target.value;
+        }
 
         setForm({ ...form, tickets: _temp });
     };
@@ -222,6 +258,7 @@ function EventsCreate() {
                 form={form}
                 isLoading={isLoading}
                 lists={lists}
+                statusTicketCategoryOptions={statusTicketCategoryOptions}
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}
                 handleChangeKeyPoint={handleChangeKeyPoint}
