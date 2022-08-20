@@ -32,7 +32,7 @@ function EventsCreate() {
                 type: "",
                 stock: "",
                 price: "",
-                expiredAt: new Date(),
+                expiredAt: new Date().toDateString(),
                 statusTicketCategory: false,
             },
         ],
@@ -213,9 +213,10 @@ function EventsCreate() {
         let _temp = [...form.tickets];
         _temp.push({
             type: "",
-            status: "",
             stock: "",
             price: "",
+            expiredAt: new Date().toDateString(),
+            statusTicketCategory: false,
         });
 
         setForm({ ...form, tickets: _temp });
